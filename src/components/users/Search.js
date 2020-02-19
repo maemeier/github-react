@@ -13,7 +13,8 @@ class Search extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.state.text);
+    this.props.onSearchUsers(this.state.text);
+    this.setState({ text: "" });
   };
   render() {
     const { text } = this.state;
