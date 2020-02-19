@@ -11,15 +11,19 @@ class App extends React.Component {
     loading: false
   };
   async componentDidMount() {
+    this.setState({
+      loading: true
+    });
     const res = await axios.get("https://api.github.com/users");
-    console.log(res.data);
+    this.setState({ users: res.data, loading: false });
   }
   render() {
+    const { loading, users } = this.state;
     return (
       <div>
         <Navbar title="Githib Finder" icon="fab fa-github" />
         <div className="container">
-          <User />
+          <User loading={loading} users={users} />
         </div>
       </div>
     );
