@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./components/layout/Navbar";
 import User from "./components/users/User";
+import Search from "./components/users/Search";
 import "./App.css";
 
 import axios from "axios";
@@ -11,10 +12,13 @@ class App extends React.Component {
     loading: false
   };
   async componentDidMount() {
+    console.log(process.env.REACT_APP_GITHUB_CLIENT_SECERT);
     this.setState({
       loading: true
     });
-    const res = await axios.get("https://api.github.com/users");
+    const res = await axios.get(
+      `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECERT}`
+    );
     this.setState({ users: res.data, loading: false });
   }
   render() {
@@ -23,6 +27,7 @@ class App extends React.Component {
       <div>
         <Navbar title="Githib Finder" icon="fab fa-github" />
         <div className="container">
+          <Search />
           <User loading={loading} users={users} />
         </div>
       </div>
