@@ -24,6 +24,7 @@ class Search extends React.Component {
   };
   render() {
     const { text } = this.state;
+    const { onClearUsers, onShowClear } = this.props;
     return (
       <div>
         <form className="form" onSubmit={this.handleSubmit}>
@@ -40,11 +41,8 @@ class Search extends React.Component {
             className="btn btn-dark btn-block"
           />
         </form>
-        {this.props.onShowClear && (
-          <button
-            className="btn btn-light btn-block"
-            onClick={this.props.onClearUsers}
-          >
+        {onShowClear && (
+          <button className="btn btn-light btn-block" onClick={onClearUsers}>
             clear
           </button>
         )}

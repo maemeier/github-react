@@ -45,7 +45,7 @@ class App extends React.Component {
           <Search
             onSearchUsers={this.handleSearchUsers}
             onClearUsers={this.handleClearUsers}
-            onShowClear={this.state.users.length > 0 ? true : false}
+            onShowClear={users.length > 0 ? true : false}
           />
           <User loading={loading} users={users} />
         </div>
