@@ -14,9 +14,11 @@ class App extends React.Component {
   state = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
     alert: null
   };
+
   async componentDidMount() {
     this.setState({
       loading: true
@@ -46,6 +48,15 @@ class App extends React.Component {
     this.setState({ user: res.data, loading: false });
   };
 
+  // get user repos
+  getUserRepos = async username => {
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `http://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECERT}`
+    );
+    this.setState({ repos: res.data, loading: false });
+  };
+
   // clear onClearUsers
   handleClearUsers = () => {
     this.setState({ users: [], loading: false });
@@ -60,7 +71,7 @@ class App extends React.Component {
     setTimeout(() => this.setState({ alert: null }), 3000);
   };
   render() {
-    const { loading, users, user } = this.state;
+    const { loading, users, user, repos } = this.state;
     return (
       <Router>
         <div>
@@ -79,7 +90,14 @@ class App extends React.Component {
                       onShowClear={users.length > 0 ? true : false}
                       setAlert={this.setAlert}
                     />
-                    <User loading={loading} users={users} />
+                    <User
+                      {...props}
+                      loading={loading}
+                      users={users}
+                      getUser={this.getUser}
+                      getUserRepos={this.getUserRepos}
+                      repos={repos}
+                    />
                   </Fragment>
                 )}
               />
@@ -93,6 +111,9 @@ class App extends React.Component {
                     getUser={this.getUser}
                     user={user}
                     loading={loading}
+                    getUser={this.getUser}
+                    getUserRepos={this.getUserRepos}
+                    repos={repos}
                   />
                 )}
               />
