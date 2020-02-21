@@ -10,6 +10,17 @@ import "./App.css";
 
 import axios from "axios";
 
+let githubClientID;
+let githubClientSecret;
+
+if (process.env.NODE_ENV !== "production") {
+  githubClientID = process.env.REACT_APP_GITHUB_CLIENT_ID;
+  githubClientSecret = process.env.REACT_APP_GITHUB_CLIENT_SECERT;
+} else {
+  githubClientID = process.env.GITHUB_CLIENT_ID;
+  githubClientSecret = process.env.GITHUB_CLIENT_SECERT;
+}
+
 class App extends React.Component {
   state = {
     users: [],
@@ -34,7 +45,7 @@ class App extends React.Component {
   handleSearchUsers = async text => {
     this.setState({ loading: true });
     const res = await axios.get(
-      `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECERT}`
+      `https://api.github.com/search/users?q=${text}&client_id=${githubClientID}&client_secret=${githubClientSecret}`
     );
     this.setState({ users: res.data.items, loading: false });
   };
@@ -43,7 +54,7 @@ class App extends React.Component {
   getUser = async username => {
     this.setState({ loading: true });
     const res = await axios.get(
-      `http://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECERT}`
+      `http://api.github.com/users/${username}?client_id=${githubClientID}&client_secret=${githubClientSecret}`
     );
     this.setState({ user: res.data, loading: false });
   };
@@ -52,7 +63,7 @@ class App extends React.Component {
   getUserRepos = async username => {
     this.setState({ loading: true });
     const res = await axios.get(
-      `http://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECERT}`
+      `http://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${githubClientID}&client_secret=${githubClientSecret}`
     );
     this.setState({ repos: res.data, loading: false });
   };
